@@ -1,0 +1,31 @@
+= elin-cmp-source
+
+https://github.com/liquidz/elin[liquidz/elin] source for https://github.com/hrsh7th/nvim-cmp[nvim-cmp].
+
+== Installation
+
+.vim-plug
+[source,vim]
+----
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'liquidz/elin-cmp-source'
+----
+
+.dein
+[source,vim]
+----
+call dein#add('nvim-lua/plenary.nvim')
+call dein#add('liquidz/elin-cmp-source')
+----
+
+== Configuration
+
+[source,lua]
+----
+cmp.config.sources({ name = 'elin' })
+----
+
+---
+
+Thanks to https://github.com/lamp/cmp-iced[lamp/cmp-iced] for the boilerplate.
