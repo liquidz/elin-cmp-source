@@ -1,6 +1,4 @@
 local cmp = require('cmp')
-local curl = require('plenary.curl')
-local json = vim.json
 
 local source = {}
 
@@ -40,36 +38,20 @@ local char_to_kind = {
 }
 
 function source:complete(request, callback)
-    local api_port = vim.g.elin_http_server_port
-    if api_port == nil then
-        return callback({})
-    end
-
     local input = string.sub(request.context.cursor_before_line, request.offset)
-    local data = {
-        method = 'elin.handler.complete/complete',
-        params = {input},
-    }
+    vim.fn['elin#request_async']('elin.handler.complete/complete', {input}, function(response)
+        local items = {}
+        for _, candidate in pairs(response) do
+            table.insert(items, {
+                label = candidate.word,
+                kind = char_to_kind[candidate.kind],
+                detail = candidate.menu,
+                documentation = candidate.info,
+            })
+        end
 
-    curl.post('http://localhost:' .. api_port .. '/api/v1', {
-        body = json.encode(data),
-        headers = { ['Content-Type'] = 'application/json' },
-        callback = function(response)
-            local items = {}
-            if response.status == 200 then
-                local data = json.decode(response.body)
-                for _, candidate in ipairs(data) do
-                    table.insert(items, {
-                        label = candidate.word,
-                        kind = char_to_kind[candidate.kind],
-                        detail = candidate.menu,
-                        documentation = candidate.info,
-                    })
-                end
-            end
-            callback(items)
-        end,
-    })
+        callback(items)
+    end)
 end
 
 return source
