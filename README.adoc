@@ -7,15 +7,12 @@ https://github.com/liquidz/elin[liquidz/elin] source for https://github.com/hrsh
 .vim-plug
 [source,vim]
 ----
-
-Plug 'nvim-lua/plenary.nvim'
 Plug 'liquidz/elin-cmp-source'
 ----
 
 .dein
 [source,vim]
 ----
-call dein#add('nvim-lua/plenary.nvim')
 call dein#add('liquidz/elin-cmp-source')
 ----
 
